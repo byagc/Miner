@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{3934E221-757E-4D43-9420-8559DA47142D}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Miner.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="MinerServer.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Miner">
+        <MSBuild Projects="Miner.dproj"/>
+    </Target>
+    <Target Name="Miner:Clean">
+        <MSBuild Projects="Miner.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Miner:Make">
+        <MSBuild Projects="Miner.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MinerServer">
+        <MSBuild Projects="MinerServer.dproj"/>
+    </Target>
+    <Target Name="MinerServer:Clean">
+        <MSBuild Projects="MinerServer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MinerServer:Make">
+        <MSBuild Projects="MinerServer.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Miner;MinerServer"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Miner:Clean;MinerServer:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Miner:Make;MinerServer:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

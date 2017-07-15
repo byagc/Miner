@@ -1,0 +1,225 @@
+inherited TfrmContentHome: TTfrmContentHome
+  Caption = 'Navegar'
+  ClientHeight = 318
+  ClientWidth = 474
+  Font.Height = -19
+  Font.Name = 'Consolas'
+  OnShow = FormShow
+  ExplicitWidth = 474
+  ExplicitHeight = 318
+  PixelsPerInch = 96
+  TextHeight = 22
+  object Splitter1: TSplitter [0]
+    Left = 469
+    Top = 41
+    Width = 5
+    Height = 258
+    Align = alRight
+    Visible = False
+    ExplicitLeft = 763
+    ExplicitTop = -32
+    ExplicitHeight = 419
+  end
+  object CEFWindowParent1: TCEFWindowParent [1]
+    Left = 0
+    Top = 41
+    Width = 469
+    Height = 258
+    Align = alClient
+    TabOrder = 0
+    ExplicitLeft = -1
+  end
+  object stat: TStatusBar [2]
+    Left = 0
+    Top = 299
+    Width = 474
+    Height = 19
+    Panels = <
+      item
+        Width = 300
+      end
+      item
+        Width = 50
+      end>
+    ExplicitLeft = 224
+    ExplicitTop = 168
+    ExplicitWidth = 0
+  end
+  object NavControlPnl: TPanel [3]
+    Left = 0
+    Top = 0
+    Width = 474
+    Height = 41
+    Align = alTop
+    BevelOuter = bvNone
+    Enabled = False
+    ShowCaption = False
+    TabOrder = 2
+    ExplicitLeft = -355
+    ExplicitWidth = 808
+    object NavButtonPnl: TPanel
+      Left = 0
+      Top = 0
+      Width = 133
+      Height = 41
+      Align = alLeft
+      BevelOuter = bvNone
+      ShowCaption = False
+      TabOrder = 0
+      object BackBtn: TButton
+        Left = 8
+        Top = 8
+        Width = 25
+        Height = 25
+        Caption = '3'
+        Font.Charset = SYMBOL_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Webdings'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 0
+        OnClick = BackBtnClick
+      end
+      object ForwardBtn: TButton
+        Left = 39
+        Top = 8
+        Width = 25
+        Height = 25
+        Caption = '4'
+        Font.Charset = SYMBOL_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Webdings'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 1
+        OnClick = ForwardBtnClick
+      end
+      object ReloadBtn: TButton
+        Left = 70
+        Top = 8
+        Width = 25
+        Height = 25
+        Caption = 'q'
+        Font.Charset = SYMBOL_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Webdings'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 2
+        OnClick = ReloadBtnClick
+      end
+      object StopBtn: TButton
+        Left = 101
+        Top = 8
+        Width = 25
+        Height = 25
+        Caption = '='
+        Font.Charset = SYMBOL_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Webdings'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 3
+        OnClick = StopBtnClick
+      end
+    end
+    object URLEditPnl: TPanel
+      Left = 133
+      Top = 0
+      Width = 263
+      Height = 41
+      Align = alClient
+      BevelOuter = bvNone
+      Padding.Top = 9
+      Padding.Bottom = 8
+      ShowCaption = False
+      TabOrder = 1
+      ExplicitWidth = 562
+      object editUrlAddress: TEdit
+        Left = 0
+        Top = 9
+        Width = 263
+        Height = 24
+        Align = alClient
+        AutoSize = False
+        BorderStyle = bsNone
+        TabOrder = 0
+        OnKeyPress = editUrlAddressKeyPress
+        ExplicitWidth = 557
+      end
+    end
+    object ConfigPnl: TPanel
+      Left = 396
+      Top = 0
+      Width = 78
+      Height = 41
+      Align = alRight
+      BevelOuter = bvNone
+      TabOrder = 2
+      ExplicitLeft = 689
+      object btnWebGo: TSpeedButton
+        Left = 6
+        Top = 9
+        Width = 34
+        Height = 28
+        Action = actWebGo
+      end
+      object ConfigBtn: TButton
+        Left = 44
+        Top = 10
+        Width = 25
+        Height = 25
+        Caption = #8801
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -17
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 0
+        Visible = False
+      end
+    end
+  end
+  object DevTools: TCEFWindowParent [4]
+    Left = 474
+    Top = 41
+    Width = 0
+    Height = 258
+    Align = alRight
+    TabOrder = 3
+    Visible = False
+    ExplicitLeft = 768
+    ExplicitTop = -32
+    ExplicitHeight = 419
+  end
+  inherited Acts: TActionList
+    Images = dmDataModule.Imgs16
+    Left = 24
+    Top = 64
+    object actWebGo: TAction
+      ImageIndex = 62
+      OnExecute = actWebGoExecute
+    end
+  end
+  object Chromium1: TChromium
+    OnTextResultAvailable = Chromium1TextResultAvailable
+    OnProcessMessageReceived = Chromium1ProcessMessageReceived
+    OnLoadingStateChange = Chromium1LoadingStateChange
+    OnBeforeContextMenu = Chromium1BeforeContextMenu
+    OnContextMenuCommand = Chromium1ContextMenuCommand
+    OnPreKeyEvent = Chromium1PreKeyEvent
+    OnKeyEvent = Chromium1KeyEvent
+    OnAddressChange = Chromium1AddressChange
+    OnTitleChange = Chromium1TitleChange
+    OnFullScreenModeChange = Chromium1FullScreenModeChange
+    OnStatusMessage = Chromium1StatusMessage
+    OnAfterCreated = Chromium1AfterCreated
+    Left = 72
+    Top = 64
+  end
+end

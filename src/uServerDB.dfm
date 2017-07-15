@@ -1,0 +1,55 @@
+object DataModule1: TDataModule1
+  OldCreateOrder = False
+  Height = 253
+  Width = 337
+  object FDQuery1: TFDQuery
+    Connection = FDConnection1
+    SQL.Strings = (
+      'select * from Items where items_path like :PNOME')
+    Left = 142
+    Top = 84
+    ParamData = <
+      item
+        Name = 'PNOME'
+        DataType = ftString
+        ParamType = ptInput
+        Value = Null
+      end>
+  end
+  object FDCreateTableQuery: TFDQuery
+    Connection = FDConnection1
+    SQL.Strings = (
+      ''
+      'CREATE TABLE items('
+      '    items_id INTEGER,'
+      '    items_Path TEXT,'
+      '    UNIQUE(items_Path)'
+      ');')
+    Left = 30
+    Top = 144
+  end
+  object FDConnection1: TFDConnection
+    Params.Strings = (
+      'Database=D:\bkp\Arlon\OneDrive\soft\agcWork\data\app.s3db'
+      'User_Name=arlon'
+      'Password=teste'
+      'LockingMode=Normal'
+      'DriverID=SQLite')
+    Connected = True
+    LoginPrompt = False
+    Left = 38
+    Top = 24
+  end
+  object FDQueryInsert: TFDQuery
+    Connection = FDConnection1
+    SQL.Strings = (
+      'INSERT OR IGNORE INTO ITEMS(items_path) VALUES(:sPath)')
+    Left = 150
+    Top = 24
+    ParamData = <
+      item
+        Name = 'SPATH'
+        ParamType = ptInput
+      end>
+  end
+end

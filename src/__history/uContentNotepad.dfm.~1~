@@ -1,0 +1,46 @@
+inherited frmContentBase1: TfrmContentBase1
+  Caption = 'frmContentBase1'
+  ClientHeight = 328
+  ClientWidth = 494
+  ExplicitWidth = 494
+  ExplicitHeight = 328
+  PixelsPerInch = 96
+  TextHeight = 13
+  object SynEdit1: TSynEdit [0]
+    Left = 0
+    Top = 41
+    Width = 494
+    Height = 287
+    Align = alClient
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Courier New'
+    Font.Style = []
+    TabOrder = 0
+    Gutter.Font.Charset = DEFAULT_CHARSET
+    Gutter.Font.Color = clWindowText
+    Gutter.Font.Height = -11
+    Gutter.Font.Name = 'Courier New'
+    Gutter.Font.Style = []
+    Lines.Strings = (
+      'SynEdit1')
+    FontSmoothing = fsmNone
+    ExplicitLeft = 16
+    ExplicitTop = 40
+    ExplicitWidth = 200
+    ExplicitHeight = 150
+  end
+  object Panel1: TPanel [1]
+    Left = 0
+    Top = 0
+    Width = 494
+    Height = 41
+    Align = alTop
+    Caption = 'Panel1'
+    TabOrder = 1
+    ExplicitLeft = 152
+    ExplicitTop = 144
+    ExplicitWidth = 185
+  end
+end

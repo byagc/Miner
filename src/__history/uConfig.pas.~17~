@@ -1,0 +1,226 @@
+unit uConfig;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uContentBase, System.Actions, System.Types, System.IOUtils,
+  Vcl.ActnList, Vcl.StdCtrls, Vcl.ComCtrls, Vcl.Buttons, uCEFWindowParent,
+  Vcl.ExtCtrls, Vcl.Shell.ShellCtrls;
+
+type
+  TfrmContentBase1 = class(TfrmContentBase)
+    Button1: TButton;
+    PageControl1: TPageControl;
+    TabSheet2: TTabSheet;
+    tsBrowser: TTabSheet;
+    Splitter1: TSplitter;
+    Splitter5: TSplitter;
+    NavControlPnl: TPanel;
+    NavButtonPnl: TPanel;
+    URLEditPnl: TPanel;
+    URLCbx: TComboBox;
+    ConfigPnl: TPanel;
+    GoBtn: TButton;
+    DevTools: TCEFWindowParent;
+    PanelMainLeft: TPanel;
+    PanelLeftTop: TPanel;
+    SpeedButton2: TSpeedButton;
+    Button2: TButton;
+    Panel6: TPanel;
+    CEFWindowParent1: TCEFWindowParent;
+    Panel7: TPanel;
+    SpeedButton1: TSpeedButton;
+    EditSearch: TEdit;
+    tsMyStuff: TTabSheet;
+    Splitter2: TSplitter;
+    ListView1: TListView;
+    Panel1: TPanel;
+    btnADD: TButton;
+    btnDelete: TButton;
+    Button3: TButton;
+    Panel2: TPanel;
+    Splitter3: TSplitter;
+    tvDirectory: TTreeView;
+    Panel3: TPanel;
+    btnRefreshHardDrivers: TButton;
+    procedure Button1Click(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure btnDeleteClick(Sender: TObject);
+    procedure btnRefreshHardDriversClick(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure tvDirectoryChange(Sender: TObject; Node: TTreeNode);
+    procedure EditSearchKeyPress(Sender: TObject; var Key: Char);
+  private
+    procedure OnInputQuery_Close(const AValues: array of string);
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmContentBase1: TfrmContentBase1;
+
+implementation
+
+{$R *.dfm}
+
+uses uMain;
+
+
+procedure TfrmContentBase1.btnDeleteClick(Sender: TObject);
+begin
+  inherited;
+  tvDirectory.SaveToFile(frmMain.SHARED_DRIVE_DIR + 'data\struct.dat');
+end;
+
+procedure TfrmContentBase1.btnRefreshHardDriversClick(Sender: TObject);
+var
+  oc, teste: TStringDynArray;
+  s: string;
+begin
+  inherited;
+  // teste := TDirectory.GetFileSystemEntries('D:\soft\');
+  oc := TDirectory.GetFiles('D:\soft\', '*.*', TSearchOption.soAllDirectories);
+  tvDirectory.Items.BeginUpdate;
+  btnRefreshHardDrivers.Enabled := False;
+  tvDirectory.Items.Clear;
+  try
+    for s in oc do
+    begin
+      OnInputQuery_Close(s);
+      // ['Item: ' + FormatDateTime('dd/MM/yy hh:mm', Now)]
+      tvDirectory.Items.BeginUpdate;
+
+      TreeAddFolderPath(s, tvDirectory);
+      Application.ProcessMessages;
+    end;
+  finally
+    btnRefreshHardDrivers.Enabled := True;
+    tvDirectory.Items.EndUpdate;
+  end;
+
+  // oc := TDirectory.GetDirectories('D:\');
+  // oc := TDirectory.
+  // tvDirectory.Items.BeginUpdate;
+  // try
+  // for s in oc do
+  // tvDirectory.Items.Add(Nil, s);
+  // finally
+  // tvDirectory.Items.EndUpdate;
+  // end;
+
+  // tvDirectory.Items.Add( TDirectory.GetFiles('C:\', '*.dll', TSearchOption.soAllDirectories));
+
+
+end;
+
+procedure TfrmContentBase1.Button1Click(Sender: TObject);
+begin
+  inherited;
+  // DataModule1.FDQuery1.SQL.Text := 'select * from tab where code = :Code';
+  // DataModule1.FDQuery1.ParamByName('code').AsString := '123';
+  // DataModule1.FDQuery1.Open;
+  // DataModule1.FDQuery1.DisableControls;
+
+  {
+  with DataModule1.FDQuery1 do
+  begin
+    DisableControls;
+    // sql.Clear;
+    // sql.Text := 'SELECT * FROM `Users` WHERE `Situacao` = "A"';
+    Open();
+    if RecordCount > 0 then
+    begin
+      while not Eof do
+      begin
+        TreeAddFolderPath(FieldByName('items_path').AsString, tvDirectory);
+        Application.ProcessMessages;
+        // cbAtendente.Items.Add(FieldByName('LoginName').AsString);
+        Next;
+      end;
+    end;
+    EnableControls;
+
+  end;
+  }
+end;
+
+procedure TfrmContentBase1.EditSearchKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  inherited;
+  if Key = #13 then
+  begin
+    MasterSearch(EditSearch.Text);
+    Key := #0;
+  end;
+
+end;
+
+procedure TfrmContentBase1.OnInputQuery_Close(const AValues: array of string);
+var
+  TaskName: String;
+begin
+  TaskName := string.Empty;
+
+  TaskName := AValues[0];
+  try
+    if (TaskName.Trim <> '') then
+    begin
+{
+      DataModule1.FDQueryInsert.ParamByName('sPath').AsString := TaskName;
+      DataModule1.FDQueryInsert.ExecSQL();
+      DataModule1.FDQuery1.Close();
+      DataModule1.FDQuery1.Open;
+      btnDelete.Visible := ListView1.Selected <> nil;
+}
+    end;
+  except
+    on e: Exception do
+    begin
+      //StatusBar1.SimpleText := e.message;
+      // ShowMessage(e.message);
+    end;
+  end;
+end;
+
+
+
+
+procedure TfrmContentBase1.SpeedButton1Click(Sender: TObject);
+begin
+  inherited;
+  SystemBrowser.LoadURL('http://www.google.com/search?q=' + EditSearch.Text);
+end;
+
+procedure TfrmContentBase1.SpeedButton2Click(Sender: TObject);
+begin
+  inherited;
+  //SystemBrowser.LoadURL(SHARED_DRIVE_DIR + 'html/dashboard.html');
+
+end;
+
+procedure TfrmContentBase1.tvDirectoryChange(Sender: TObject;
+  Node: TTreeNode);
+var
+  FChild: TTreeNode;
+begin
+  inherited;
+  if Assigned(tvDirectory.Selected.Data) then
+  begin
+    Self.caption := TMyData(tvDirectory.Selected.Data).Dir;
+    begin
+      FChild := Node.GetFirstChild;
+      ListView1.Clear;
+      while FChild <> nil do
+      begin
+        ListView1.Items.Add.caption := FChild.Text;
+        FChild := Node.GetNextChild(FChild);
+      end;
+    end;
+  end;
+
+end;
+
+end.

@@ -1,0 +1,98 @@
+unit uServerMethods;
+
+interface
+
+uses System.SysUtils, System.Classes, System.Json,
+  Datasnap.DSServer, Datasnap.DSAuth;
+
+type
+{$METHODINFO ON}
+  TServerMethods = class(TComponent)
+  private
+  public
+    function EchoString(Value: string): string;
+    [TRoleAuth('admins')]
+    function ReverseString(Value: string): string;
+    function Search(param: string): TJSONObject;
+  end;
+{$METHODINFO OFF}
+
+implementation
+
+
+uses System.StrUtils, uServerMain;
+
+function TServerMethods.Search(param: string): TJSONObject;
+var
+  I: Integer;
+  qtdeCampos: Integer;
+  ja: TJSONArray;
+  jb: TJSONArray;
+  jo: TJSONObject;
+  jv: TJSONObject;
+  jg: TJSONObject;
+begin
+  // frmMain.Memo1.Clear;
+  frmMain.Memo1.Lines.Add('Procurar por: ' + param);
+
+  // jo := TJSONObject.Create;
+  // jo.AddPair('id', '1');  //  TJSONString.Create(
+  // ja.AddElement(jo);
+
+  ja := TJSONArray.Create;
+  jb := TJSONArray.Create;
+
+  jo := TJSONObject.Create;
+  jo.AddPair('id', '2');
+  jo.AddPair('name', 'Gesiel');
+  jo.AddPair('title', 'SubManager');
+  jb.AddElement(jo);
+
+  jv := TJSONObject.Create;
+  jv.AddPair('id', '1');
+  jv.AddPair('name', 'Arlon');
+  jv.AddPair('title', 'Manager');
+  jv.AddPair('children', jb);
+
+  ja.AddElement(jv);
+
+  // Add(ja, 'id', '1');
+  // Add(ja, 'name', 'Arlon');
+  // Add(ja, 'title', 'Manager');
+  // Add(ja, 'children', 'teste');
+
+  // Add(ja, '', '');
+
+  {
+    DataModule1.FDQuery1.Params.ParamByName('PNOME').AsString := '%' + param + '%';
+    DataModule1.FDQuery1.Open;
+    DataModule1.FDQuery1.First;
+
+    while not DataModule1.FDQuery1.Eof do
+    begin
+    jo := TJSONObject.Create;
+    jo.AddPair(DataModule1.FDQuery1.Fields[1].FieldName, TJSONString.Create(DataModule1.FDQuery1.Fields[1].AsString));
+    ja.AddElement(jo);
+    DataModule1.FDQuery1.Next;
+    end;
+
+    DataModule1.FDQuery1.Close;
+  }
+  Result := jv;
+  // frmMain.Memo1.Lines.Add(Result.ToString);
+  frmMain.Memo1.Lines.Add(jv.ToString);
+end;
+
+function TServerMethods.EchoString(Value: string): string;
+begin
+  Result := Value;
+end;
+
+function TServerMethods.ReverseString(Value: string): string;
+begin
+  Result := (System.StrUtils.DupeString(Value)); //   ReverseString
+
+end;
+
+end.
+

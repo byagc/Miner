@@ -1,0 +1,17 @@
+﻿[FDQuery1]
+Coordinates=290,20,63,51
+
+[FDConnection1]
+Coordinates=258,1,90,33
+
+[FDCreateTableQuery]
+Coordinates=112,10,116,51
+Visible=True
+
+[FDQueryInsert]
+Coordinates=160,110,85,51
+Visible=True
+
+[]
+Coordinates=10,10,92,69
+

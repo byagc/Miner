@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Minhas coisas
+</title>
+
+    <link rel="icon" href="images/logo.png" type="image/png">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/FortAwesome/Font-Awesome/master/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/jquery.orgchart.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chart.css">
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+	<script type="text/javascript" src="js/base64.js"></script>
+	<script type="text/javascript" src="js/json2.js"></script>
+	<script type="text/javascript" src="js/serverfunctionexecutor.js"></script>
+	<script type="text/javascript" src="js/connection.js"></script>
+	<script type="text/javascript" src="<#serverfunctionsjs>"></script>
+	<script type="text/javascript">
+
+	var loginRequired = false;
+
+	function onLoad()
+	{
+	  showTime();
+	  loginRequired = <#loginRequired>;
+	  setConnection('<#host>', '<#port>', '<#urlpath>');
+	  if (loginRequired)
+	  {
+		showLogin(true);
+	  }
+	  else
+	  {
+		showLogin(false);
+	  }
+	}
+
+	function onLogin()
+	{
+	  if (loginRequired)
+	  {
+		if (AdminInst == null)
+		{
+			if (!setCredentials(document.getElementById('userField').value, document.getElementById('passwrdField').value))
+			{
+			  loginCorrect(false);
+			  return;
+			}
+			else
+			{
+			  loginCorrect(true);
+			  showLogin(false);
+			}
+		}
+	  }
+	  else
+		showLogin(false);
+	}
+
+	function loginCorrect(isCorrect)
+	{
+	  var errorDiv = document.getElementById('loginError');
+	  if ( errorDiv != null )
+	  {
+		errorDiv.innerHTML= isCorrect ? "" : "login incorrect";
+	  }
+	}
+
+	function showLogin(show)
+	{
+	  var loginDiv = document.getElementById('logindiv');
+	  var contentDiv = document.getElementById('contentdiv');
+	  if (show)
+	  {
+		  // show div
+		  loginDiv.style.display="block";
+		  contentDiv.style.display="none";
+	  }
+	  else
+	  {
+		  // show div
+		  loginDiv.style.display="none";
+		  contentDiv.style.display="block";
+		    $.getScript('js/jquery.orgchart.js', function() { console.log('orgchart loaded'); });
+		    $.getScript('js/chart.js', function() { console.log('chart loaded'); });
+	  }
+	}
+
+	function showTime()
+	{
+	  var d = new Date();
+	  var h = d.getHours();
+	  var m = d.getMinutes();
+	  var s = d.getSeconds();
+	  var timeElement = document.getElementById('timeElement');
+	  if ( timeElement != null )
+	  {
+		timeElement.innerText=
+		  (h <= 9 ? "0" : "") + h + ":" +
+		  (m <= 9 ? "0" : "") + m + ":" +
+		  (s <= 9 ? "0" : "") + s;
+	  }
+	}
+
+	function serverMethods()
+	{
+	  return new <#classname>(connectionInfo);
+	}
+
+	function onReverseStringClick()	{
+	  if (loginRequired && (AdminInst == null))
+	  {
+		showLogin(true);
+		return;
+	  }
+	  var valueField = document.getElementById('valueField');
+	  var s = serverMethods().ReverseString(valueField.value);
+	  valueField.value = s.result;
+	}
+
+</script>
+
+</head>
+<body onload="onLoad()">
+  <#serverfunctioninvoker>
+    <div id="logindiv" style="display: none;">
+      <p class="divlabel">Login
+</p><br />
+      <form onsubmit="onLogin(); return false;">
+        <table class="authtable">
+          <tr>
+            <td>User Name:
+</td>
+            <td><input id="userField" class="loginField" type="text" /></td>
+          </tr>
+          <tr>
+            <td>Password:
+</td>
+            <td><input id="passwrdField" class="loginField" type="password" /></td>
+          </tr>
+        </table>
+        <div id="loginError" class="errorMsg"></div><br /><input id="loginButton" type="submit" value="LOG IN" />
+        
+      </form>
+    </div>
+
+    <div id="contentdiv" class="contentdiv" style="display: none;">
+      <table>
+        <tr>
+          <td><input id="valueField" class="loginField" type="text" value="A B C" /></td>
+          <td><button onclick="javascript:onReverseStringClick();">ReverseString
+</button></td>
+        </tr>
+      </table>
+		<div id="chart-container"></div>
+    </div>
+  <div class="home-link">
+
+    <img src="images/logo.png">
+  </div>
+
+
+<script>
+
+
+	var $window = $(window).on('resize', function(){
+	  //debugger;
+		//var p = $('#msgrodape');
+		var offset = $(window).height();
+		$( "#chart-container" ).height(offset - 80 );
+	}).trigger('resize'); //on page load
+
+</script>
+  </body>
+</html>

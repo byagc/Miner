@@ -1,0 +1,291 @@
+unit uContentConfig;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  System.UITypes,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uContentBase, Vcl.StdCtrls,
+  Vcl.ComCtrls, Vcl.Buttons, SynEdit, Vcl.ExtCtrls, Vcl.ClipBrd,
+  SynEditHighlighter, SynHighlighterSQL, System.Actions,
+  Vcl.ActnList,
+  Vcl.ExtDlgs,
+  ChromeTabs,
+  ChromeTabsTypes,
+  ChromeTabsUtils,
+  ChromeTabsControls,
+  ChromeTabsThreadTimer,
+  ChromeTabsClasses, Vcl.OleCtrls, SHDocVw,
+  uCEFChromiumWindow, uCEFChromium, uCEFWindowParent, uCEFInterfaces, uCEFApplication, uCEFTypes, uCEFConstants;
+
+const
+  MINIBROWSER_CREATED = WM_APP + $100;
+  MINIBROWSER_SHOWDEVTOOLS = WM_APP + $101;
+  MINIBROWSER_HIDEDEVTOOLS = WM_APP + $102;
+  MINIBROWSER_COPYHTML = WM_APP + $103;
+  MINIBROWSER_VISITDOM = WM_APP + $104;
+
+  MINIBROWSER_HOMEPAGE = 'https://www.google.com';
+
+  MINIBROWSER_CONTEXTMENU_SHOWDEVTOOLS = MENU_ID_USER_FIRST + 1;
+  MINIBROWSER_CONTEXTMENU_HIDEDEVTOOLS = MENU_ID_USER_FIRST + 2;
+  MINIBROWSER_CONTEXTMENU_SHOWJSALERT = MENU_ID_USER_FIRST + 3;
+  MINIBROWSER_CONTEXTMENU_SETJSEVENT = MENU_ID_USER_FIRST + 4;
+  MINIBROWSER_CONTEXTMENU_COPYHTML = MENU_ID_USER_FIRST + 5;
+  MINIBROWSER_CONTEXTMENU_VISITDOM = MENU_ID_USER_FIRST + 6;
+  MINIBROWSER_CONTEXTMENU_JSWRITEDOC = MENU_ID_USER_FIRST + 7;
+  MINIBROWSER_CONTEXTMENU_JSPRINTDOC = MENU_ID_USER_FIRST + 8;
+  MINIBROWSER_CONTEXTMENU_REGSCHEME = MENU_ID_USER_FIRST + 9;
+  MINIBROWSER_CONTEXTMENU_CLEARFACT = MENU_ID_USER_FIRST + 10;
+  MINIBROWSER_CONTEXTMENU_REFRESH = MENU_ID_USER_FIRST + 11;
+
+type
+  TfrmContentConfig = class(TfrmContentBase)
+    CEFWindowParent1: TCEFWindowParent;
+    Chromium1: TChromium;
+    stat: TStatusBar;
+    procedure FormShow(Sender: TObject);
+    procedure Chromium1AfterCreated(Sender: TObject; const browser: ICefBrowser);
+    procedure Chromium1StatusMessage(Sender: TObject; const browser: ICefBrowser; const value: ustring);
+    procedure Chromium1AddressChange(Sender: TObject; const browser: ICefBrowser; const frame: ICefFrame; const url: ustring);
+    procedure Chromium1BeforeContextMenu(Sender: TObject; const browser: ICefBrowser; const frame: ICefFrame; const params: ICefContextMenuParams; const model: ICefMenuModel);
+    procedure Chromium1ContextMenuCommand(Sender: TObject; const browser: ICefBrowser; const frame: ICefFrame; const params: ICefContextMenuParams; commandId: Integer; eventFlags: TCefEventFlags; out Result: Boolean);
+    procedure Chromium1FullScreenModeChange(Sender: TObject; const browser: ICefBrowser; fullscreen: Boolean);
+    procedure Chromium1KeyEvent(Sender: TObject; const browser: ICefBrowser; const event: PCefKeyEvent; osEvent: PMsg; out Result: Boolean);
+    procedure Chromium1PreKeyEvent(Sender: TObject; const browser: ICefBrowser; const event: PCefKeyEvent; osEvent: PMsg; out isKeyboardShortcut, Result: Boolean);
+    procedure Chromium1ProcessMessageReceived(Sender: TObject; const browser: ICefBrowser; sourceProcess: TCefProcessId; const message: ICefProcessMessage; out Result: Boolean);
+    procedure Chromium1TextResultAvailable(Sender: TObject; const aText: string);
+    procedure Chromium1TitleChange(Sender: TObject; const browser: ICefBrowser; const title: ustring);
+  private
+    FHomepage: string;
+    procedure BrowserCreatedMsg(var aMessage: TMessage); message MINIBROWSER_CREATED;
+    // procedure ShowDevToolsMsg(var aMessage: TMessage); message MINIBROWSER_SHOWDEVTOOLS;
+    // procedure HideDevToolsMsg(var aMessage: TMessage); message MINIBROWSER_HIDEDEVTOOLS;
+    // procedure CopyHTMLMsg(var aMessage: TMessage); message MINIBROWSER_COPYHTML;
+    // procedure VisitDOMMsg(var aMessage: TMessage); message MINIBROWSER_VISITDOM;
+
+  public
+    property Homepage: string read FHomepage write FHomepage;
+
+  end;
+
+var
+  frmContentConfig: TfrmContentConfig;
+
+implementation
+
+uses
+  // ceflib,
+  uDataModule, uMain, uCEFProcessMessage, uCEFSchemeHandlerFactory, uHelpScheme;
+
+{$R *.dfm}
+
+procedure TfrmContentConfig.Chromium1AddressChange(Sender: TObject; const browser: ICefBrowser; const frame: ICefFrame; const url: ustring);
+begin
+  inherited;
+  // AddURL(url);
+  // frmMain.Caption := url;
+end;
+
+procedure TfrmContentConfig.Chromium1AfterCreated(Sender: TObject; const browser: ICefBrowser);
+begin
+  inherited;
+  PostMessage(Handle, MINIBROWSER_CREATED, 0, 0);
+end;
+
+procedure TfrmContentConfig.Chromium1BeforeContextMenu(Sender: TObject; const browser: ICefBrowser; const frame: ICefFrame; const params: ICefContextMenuParams; const model: ICefMenuModel);
+begin
+  inherited;
+  model.AddSeparator;
+  model.AddItem(MINIBROWSER_CONTEXTMENU_SHOWJSALERT, 'Show JS Alert');
+  model.AddItem(MINIBROWSER_CONTEXTMENU_SETJSEVENT, 'Set mouseover event');
+  model.AddItem(MINIBROWSER_CONTEXTMENU_COPYHTML, 'Copy HTML to clipboard');
+  model.AddItem(MINIBROWSER_CONTEXTMENU_VISITDOM, 'Visit DOM');
+  model.AddItem(MINIBROWSER_CONTEXTMENU_JSWRITEDOC, 'Modify HTML document');
+  model.AddItem(MINIBROWSER_CONTEXTMENU_JSPRINTDOC, 'Print using Javascript');
+  model.AddItem(MINIBROWSER_CONTEXTMENU_REGSCHEME, 'Register scheme');
+  model.AddItem(MINIBROWSER_CONTEXTMENU_CLEARFACT, 'Clear schemes');
+  model.AddSeparator;
+  model.AddItem(MINIBROWSER_CONTEXTMENU_REFRESH, 'Atualizar');
+
+
+end;
+
+procedure TfrmContentConfig.Chromium1ContextMenuCommand(Sender: TObject; const browser: ICefBrowser; const frame: ICefFrame; const params: ICefContextMenuParams; commandId: Integer; eventFlags: TCefEventFlags; out Result: Boolean);
+var
+  TempParam: WParam;
+  TempFactory: ICefSchemeHandlerFactory;
+begin
+  inherited;
+  Result := False;
+
+  case commandId of
+    MINIBROWSER_CONTEXTMENU_HIDEDEVTOOLS:
+      PostMessage(Handle, MINIBROWSER_HIDEDEVTOOLS, 0, 0);
+
+    MINIBROWSER_CONTEXTMENU_SHOWDEVTOOLS:
+      begin
+        TempParam := ((params.XCoord and $FFFF) shl 16) or (params.YCoord and $FFFF);
+        PostMessage(Handle, MINIBROWSER_SHOWDEVTOOLS, TempParam, 0);
+      end;
+
+    MINIBROWSER_CONTEXTMENU_SHOWJSALERT:
+      if (browser <> nil) and (browser.MainFrame <> nil) then
+        browser.MainFrame.ExecuteJavaScript('alert(''JavaScript execute works!'');', 'about:blank', 0);
+
+    MINIBROWSER_CONTEXTMENU_SETJSEVENT:
+      if (browser <> nil) and (browser.MainFrame <> nil) then
+        browser.MainFrame.ExecuteJavaScript('document.body.addEventListener("mouseover", function(evt){' + 'function getpath(n){' + 'var ret = "<" + n.nodeName + ">";' + 'if (n.parentNode){return getpath(n.parentNode) + ret} else ' + 'return ret' + '};' +
+          'myextension.mouseover(getpath(evt.target))}' + ')', 'about:blank', 0);
+
+    MINIBROWSER_CONTEXTMENU_COPYHTML:
+      PostMessage(Handle, MINIBROWSER_COPYHTML, 0, 0);
+
+    MINIBROWSER_CONTEXTMENU_VISITDOM:
+      PostMessage(Handle, MINIBROWSER_VISITDOM, 0, 0);
+
+    MINIBROWSER_CONTEXTMENU_JSWRITEDOC:
+      if (browser <> nil) and (browser.MainFrame <> nil) then
+        browser.MainFrame.ExecuteJavaScript('var css = ' + chr(39) + '@page {size: A4; margin: 0;} @media print {html, body {width: 210mm; height: 297mm;}}' + chr(39) + '; ' + 'var style = document.createElement(' + chr(39) + 'style' + chr(39) + '); ' + 'style.type = ' + chr(39) + 'text/css' +
+          chr(39) + '; ' + 'style.appendChild(document.createTextNode(css)); ' + 'document.head.appendChild(style);', 'about:blank', 0);
+
+    MINIBROWSER_CONTEXTMENU_JSPRINTDOC:
+      if (browser <> nil) and (browser.MainFrame <> nil) then
+        browser.MainFrame.ExecuteJavaScript('window.print();', 'about:blank', 0);
+
+    MINIBROWSER_CONTEXTMENU_REGSCHEME:
+      if (browser <> nil) and (browser.host <> nil) and (browser.host.RequestContext <> nil) then
+      begin
+        // You can register the Scheme Handler Factory in the DPR file or later, for example in a context menu command.
+        TempFactory := TCefSchemeHandlerFactoryOwn.Create(THelpScheme);
+        if not(browser.host.RequestContext.RegisterSchemeHandlerFactory('hello', '', TempFactory)) then
+          MessageDlg('RegisterSchemeHandlerFactory error !', mtError, [mbOk], 0);
+      end;
+
+    MINIBROWSER_CONTEXTMENU_REFRESH:
+      if (browser <> nil) and (browser.host <> nil) and (browser.host.RequestContext <> nil) then
+      begin
+        browser.Reload;
+      end;
+    MINIBROWSER_CONTEXTMENU_CLEARFACT:
+      if (browser <> nil) and (browser.host <> nil) and (browser.host.RequestContext <> nil) then
+      begin
+        if not(browser.host.RequestContext.ClearSchemeHandlerFactories) then
+          MessageDlg('ClearSchemeHandlerFactories error !', mtError, [mbOk], 0);
+      end;
+
+  end;
+
+end;
+
+procedure TfrmContentConfig.Chromium1FullScreenModeChange(Sender: TObject; const browser: ICefBrowser; fullscreen: Boolean);
+begin
+  inherited;
+  if fullscreen then
+  begin
+    stat.Visible := False;
+
+    if (WindowState = wsMaximized) then
+      WindowState := wsNormal;
+
+    BorderIcons := [];
+    BorderStyle := bsNone;
+    WindowState := wsMaximized;
+  end
+  else
+  begin
+    BorderIcons := [biSystemMenu, biMinimize, biMaximize];
+    BorderStyle := bsSizeable;
+    WindowState := wsNormal;
+
+    stat.Visible := True;
+  end;
+
+end;
+
+procedure TfrmContentConfig.Chromium1KeyEvent(Sender: TObject; const browser: ICefBrowser; const event: PCefKeyEvent; osEvent: PMsg; out Result: Boolean);
+var
+  TempMsg: TMsg;
+begin
+  inherited;
+  {
+    Result := False;
+
+    if (event <> nil) and (osEvent <> nil) then
+    case osEvent.message of
+    WM_KEYUP:
+    begin
+    TempMsg := osEvent^;
+
+    HandleKeyUp(TempMsg, Result);
+    end;
+
+    WM_KEYDOWN:
+    begin
+    TempMsg := osEvent^;
+
+    HandleKeyDown(TempMsg, Result);
+    end;
+    end;
+  }
+end;
+
+procedure TfrmContentConfig.Chromium1PreKeyEvent(Sender: TObject; const browser: ICefBrowser; const event: PCefKeyEvent; osEvent: PMsg; out isKeyboardShortcut, Result: Boolean);
+begin
+  inherited;
+  Result := False;
+  if (event <> nil) and (event.kind in [KEYEVENT_KEYDOWN, KEYEVENT_KEYUP]) and (event.windows_key_code = VK_F12) then
+    isKeyboardShortcut := True;
+end;
+
+procedure TfrmContentConfig.Chromium1ProcessMessageReceived(Sender: TObject; const browser: ICefBrowser; sourceProcess: TCefProcessId; const message: ICefProcessMessage; out Result: Boolean);
+begin
+  inherited;
+  if (message <> nil) and (message.Name = 'mouseover') and (message.ArgumentList <> nil) then
+  begin
+    // Message received from the extension
+    stat.Panels[0].Text := message.ArgumentList.GetString(0);
+    Result := True;
+  end
+  else
+    Result := False;
+
+end;
+
+procedure TfrmContentConfig.Chromium1StatusMessage(Sender: TObject; const browser: ICefBrowser; const value: ustring);
+begin
+  inherited;
+  stat.Panels[0].Text := value;
+end;
+
+procedure TfrmContentConfig.Chromium1TextResultAvailable(Sender: TObject; const aText: string);
+begin
+  inherited;
+  clipboard.AsText := aText;
+end;
+
+procedure TfrmContentConfig.Chromium1TitleChange(Sender: TObject; const browser: ICefBrowser; const title: ustring);
+begin
+  inherited;
+  if (title <> '') then
+    Caption := title
+  else
+    Caption := 'Home';
+
+end;
+
+procedure TfrmContentConfig.FormShow(Sender: TObject);
+begin
+  inherited;
+  Chromium1.CreateBrowser(CEFWindowParent1, '');
+end;
+
+procedure TfrmContentConfig.BrowserCreatedMsg(var aMessage: TMessage);
+begin
+  Chromium1.LoadURL(frmMain.SHARED_DRIVE_DIR + 'html\dashboard.html');
+
+end;
+
+end.
+

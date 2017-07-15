@@ -1,0 +1,53 @@
+inherited frmNotepad: TfrmNotepad
+  Caption = 'NotepadBB'
+  ClientHeight = 328
+  ClientWidth = 494
+  ExplicitWidth = 494
+  ExplicitHeight = 328
+  PixelsPerInch = 96
+  TextHeight = 13
+  object SynEdit1: TSynEdit [0]
+    Left = 0
+    Top = 41
+    Width = 494
+    Height = 287
+    Align = alClient
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -21
+    Font.Name = 'Courier New'
+    Font.Style = []
+    TabOrder = 0
+    Gutter.Font.Charset = DEFAULT_CHARSET
+    Gutter.Font.Color = clWindowText
+    Gutter.Font.Height = -11
+    Gutter.Font.Name = 'Courier New'
+    Gutter.Font.Style = []
+    Gutter.ShowLineNumbers = True
+    Gutter.Gradient = True
+    Highlighter = SynPHPSyn1
+    RightEdge = 120
+    FontSmoothing = fsmNone
+  end
+  object Panel1: TPanel [1]
+    Left = 0
+    Top = 0
+    Width = 494
+    Height = 41
+    Align = alTop
+    BevelOuter = bvNone
+    Caption = 'Panel1'
+    ShowCaption = False
+    TabOrder = 1
+    ExplicitLeft = 152
+    ExplicitTop = 144
+    ExplicitWidth = 185
+  end
+  object SynPHPSyn1: TSynPHPSyn
+    Options.AutoDetectEnabled = False
+    Options.AutoDetectLineLimit = 0
+    Options.Visible = False
+    Left = 288
+    Top = 176
+  end
+end
