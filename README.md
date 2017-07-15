@@ -1,5 +1,9 @@
 # Miner
 The new browser ideology
 
+This repository has just 5 basic commits on master by three different coders, providing a basic commit structure for learning exploring Git commands.
 
-Teste 2
+Usage
+
+Using git log to review simple history
+Filtering git log with --author option
