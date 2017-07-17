@@ -2,7 +2,7 @@ object frmMain: TfrmMain
   Left = 271
   Top = 114
   Caption = 'frmMain'
-  ClientHeight = 416
+  ClientHeight = 324
   ClientWidth = 397
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -83,9 +83,10 @@ object frmMain: TfrmMain
     Left = 0
     Top = 41
     Width = 397
-    Height = 375
+    Height = 283
     Align = alClient
     TabOrder = 1
+    ExplicitHeight = 375
   end
   object ApplicationEvents1: TApplicationEvents
     OnIdle = ApplicationEvents1Idle

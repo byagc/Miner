@@ -4,7 +4,7 @@ File_1=TSourceModule,'D:\bkp\Arlon\OneDrive\soft\agcWork\src\uContentHTML.pas',0
 File_2=TSourceModule,'D:\bkp\Arlon\OneDrive\soft\agcWork\src\uMinerScheme.pas',0,1,67,1,1,0,0,,
 File_3=TSourceModule,'D:\bkp\Arlon\OneDrive\soft\agcWork\src\uContentBrowser.pas',0,1,137,3,163,0,0,,
 File_4=TSourceModule,'D:\bkp\Arlon\OneDrive\soft\agcWork\src\uContentBase.pas',0,1,23,16,32,0,0,,
-File_5=TSourceModule,'D:\bkp\Arlon\OneDrive\soft\agcWork\src\uMain.pas',0,1,560,41,582,0,0,,{1,1000,1}{2,1077,4}{3,1077,4}
+File_5=TSourceModule,'D:\bkp\Arlon\OneDrive\soft\agcWork\src\uMain.pas',0,1,560,41,582,0,0,,{1
 File_6=TSourceModule,'D:\bkp\Arlon\OneDrive\soft\agcWork\src\uBase.pas',0,1,9,3,32,0,0,,
 File_7=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\SOURCE\RTL\SYS\System.pas',0,1,25212,1,25223,0,0,,
 File_8=TSourceModule,'D:\bkp\Arlon\OneDrive\soft\agcWork\src\uChildForm.pas',0,1,38,67,55,0,0,,
@@ -29,18 +29,18 @@ FormOnTop=0
 [D:\bkp\Arlon\OneDrive\soft\agcWork\src\uServerWebModule.pas]
 ModuleType=TSourceModule
 FormState=1
-FormOnTop=1
+FormOnTop=0
 
 [D:\bkp\Arlon\OneDrive\soft\agcWork\src\uServerMain.pas]
 ModuleType=TSourceModule
 FormState=1
-FormOnTop=1
-
-[D:\bkp\Arlon\OneDrive\soft\agcWork\src\uDataModule.pas]
-FormState=1
 FormOnTop=0
 
 [D:\bkp\Arlon\OneDrive\soft\agcWork\src\uServerContainer.pas]
+FormState=1
+FormOnTop=0
+
+[D:\bkp\Arlon\OneDrive\soft\agcWork\src\uServerDB.pas]
 FormState=1
 FormOnTop=0
 
