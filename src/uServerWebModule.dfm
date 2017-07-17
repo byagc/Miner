@@ -24,8 +24,8 @@ object WebModule1: TWebModule1
       OnAction = WebModuleDefaultAction
     end>
   BeforeDispatch = WebModuleBeforeDispatch
-  Height = 317
-  Width = 339
+  Height = 306
+  Width = 286
   object DSHTTPWebDispatcher1: TDSHTTPWebDispatcher
     Filters = <>
     AuthenticationManager = ServerContainer1.DSAuthenticationManager1
