@@ -13,20 +13,25 @@ object WebModule1: TWebModule1
       Producer = ServerFunctionInvoker
     end
     item
+      Name = 'Search'
+      PathInfo = '/Search'
+      Producer = Index
+    end
+    item
       Default = True
       Name = 'DefaultAction'
       PathInfo = '/'
       OnAction = WebModuleDefaultAction
     end>
   BeforeDispatch = WebModuleBeforeDispatch
-  Height = 316
-  Width = 420
+  Height = 317
+  Width = 339
   object DSHTTPWebDispatcher1: TDSHTTPWebDispatcher
     Filters = <>
     AuthenticationManager = ServerContainer1.DSAuthenticationManager1
     OnFormatResult = DSHTTPWebDispatcher1FormatResult
     WebDispatch.PathInfo = 'datasnap*'
-    Left = 56
+    Left = 62
     Top = 35
   end
   object ServerFunctionInvoker: TPageProducer
@@ -78,19 +83,19 @@ object WebModule1: TWebModule1
         DirectoryMask = '\templates\*'
       end>
     RootDirectory = '.'
-    Left = 56
+    Left = 62
     Top = 104
   end
   object DSProxyGenerator1: TDSProxyGenerator
     ExcludeClasses = 'DSMetadata'
     MetaDataProvider = DSServerMetaDataProvider1
     Writer = 'Java Script REST'
-    Left = 56
+    Left = 62
     Top = 168
   end
   object DSServerMetaDataProvider1: TDSServerMetaDataProvider
     Server = ServerContainer1.DSServer1
-    Left = 56
+    Left = 62
     Top = 240
   end
   object Index: TPageProducer
